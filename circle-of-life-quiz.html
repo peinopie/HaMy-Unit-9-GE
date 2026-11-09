@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson 4.5 – The Circle of Life · Vocabulary Quiz</title>
+<style>
+  :root{ --ink:#111; --muted:#777; --line:#d9d9d9; --soft:#f4f4f4; --bg:#fff; }
+  *{box-sizing:border-box;border-radius:0}
+  body{margin:0;font-family:"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;background:var(--bg);color:var(--ink);
+       min-height:100vh;display:flex;justify-content:center;padding:40px 16px;-webkit-font-smoothing:antialiased}
+  .wrap{width:100%;max-width:680px}
+  header{margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid var(--ink)}
+  header h1{margin:0;font-size:1.5rem;font-weight:700;letter-spacing:-.01em}
+  header p{margin:4px 0 0;color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.08em}
+  .card{background:var(--bg)}
+  h2{font-weight:700;font-size:1.3rem;letter-spacing:-.01em}
+  .top{display:flex;justify-content:space-between;align-items:baseline;font-size:.8rem;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.08em}
+  .top b,.score{color:var(--ink);font-weight:700}
+  .badge{color:var(--ink);font-weight:700}
+  .bar{height:2px;background:var(--line);margin-bottom:28px}
+  .bar div{height:100%;background:var(--ink);width:0;transition:width .3s}
+  .photo{font-size:3.4rem;text-align:center;border:1px solid var(--line);padding:26px 10px;margin-bottom:20px;letter-spacing:.15em;line-height:1.2;filter:grayscale(1)}
+  .photo small{display:block;font-size:.85rem;letter-spacing:0;color:var(--muted);margin-top:10px}
+  .pic{position:relative;margin-bottom:20px;border:1px solid var(--line)}
+  .pic img{display:block;width:100%;max-height:340px;object-fit:cover;background:var(--soft)}
+  .pic .cap{padding:10px 12px;font-size:.9rem;color:#333;border-top:1px solid var(--line)}
+  .pic .credit{position:absolute;right:0;top:0;font-size:.66rem;background:rgba(0,0,0,.6);color:#fff;padding:3px 7px;text-decoration:none;letter-spacing:.02em}
+  .qrow{display:flex;gap:12px;align-items:flex-start}
+  .q{flex:1;font-size:1.2rem;font-weight:600;line-height:1.5;margin:0 0 20px}
+  .q .blank{display:inline-block;min-width:90px;border-bottom:1.5px solid var(--ink);margin:0 4px}
+  .icon{width:18px;height:18px;display:block}
+  .spk{flex:none;width:38px;height:38px;border:1px solid var(--ink);background:var(--bg);color:var(--ink);cursor:pointer;display:grid;place-items:center;padding:0}
+  .spk:hover{background:var(--ink);color:var(--bg)}
+  .opts{display:grid;gap:0;border-top:1px solid var(--line)}
+  .opt{text-align:left;font:inherit;font-size:1rem;padding:14px 12px;border:none;border-bottom:1px solid var(--line);background:var(--bg);color:var(--ink);
+       cursor:pointer;display:flex;gap:14px;align-items:center;transition:background .12s}
+  .opt:hover{background:var(--soft)}
+  .opt .k{flex:none;width:26px;height:26px;border:1px solid var(--ink);display:grid;place-items:center;font-weight:700;font-size:.78rem}
+  .opt .say{margin-left:auto;flex:none;color:var(--muted);padding:4px;display:grid;place-items:center}
+  .opt .say:hover{color:var(--ink)}
+  .opt.locked{cursor:default}
+  .opt.locked:hover{background:var(--bg)}
+  .opt.right,.opt.right.locked:hover{background:var(--ink);color:var(--bg)}
+  .opt.right .k{border-color:var(--bg)}
+  .opt.right .say{color:#bbb}
+  .opt.wrong,.opt.wrong.locked:hover{background:var(--bg);color:var(--muted);text-decoration:line-through}
+  .opt.wrong .k{border-style:dashed;border-color:var(--muted)}
+  .fb{margin-top:20px;padding:14px 0 0;border-top:1px solid var(--ink);display:none;line-height:1.6;font-size:.95rem}
+  .fb.ok,.fb.no{display:block}
+  .fb .tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:2px 7px;margin-right:8px;border:1px solid var(--ink)}
+  .fb.ok .tag{background:var(--ink);color:var(--bg)}
+  .next,.btn{margin-top:24px;width:100%;padding:15px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);
+       font:inherit;font-size:.9rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;cursor:pointer}
+  .next{display:none}
+  .next:hover,.btn:hover{background:var(--bg);color:var(--ink)}
+  .btn.alt{background:var(--bg);color:var(--ink)}
+  .btn.alt:hover{background:var(--ink);color:var(--bg)}
+  .center{text-align:left}
+  .lead{color:var(--muted);line-height:1.6;margin:8px 0 0}
+  .label{margin:28px 0 10px;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+  .vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+  .vocab button{font:inherit;font-size:.95rem;border:none;border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg);color:var(--ink);
+       padding:11px 12px;cursor:pointer;text-align:left;display:flex;gap:10px;align-items:center}
+  .vocab button:hover{background:var(--soft)}
+  .vocab button span{display:block}
+  .vocab small{display:block;color:var(--muted);font-size:.72rem}
+  .toggles{display:flex;gap:22px;flex-wrap:wrap;margin:22px 0 0;font-size:.88rem;color:#444}
+  .toggles label{display:flex;gap:8px;align-items:center;cursor:pointer}
+  .toggles input{accent-color:#111;width:15px;height:15px}
+  .stats{display:flex;gap:0;margin:20px 0;border:1px solid var(--ink)}
+  .stats div{flex:1;padding:16px;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+  .stats div+div{border-left:1px solid var(--ink)}
+  .stats b{display:block;font-size:2rem;color:var(--ink);letter-spacing:-.02em;text-transform:none}
+  .congrats{border:2px solid var(--ink);padding:22px;margin:22px 0;font-size:1.25rem;font-weight:700;line-height:1.5}
+  .review{margin-top:22px}
+  .review h3{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:0 0 8px}
+  .review ul{list-style:none;padding:0;margin:0;border-top:1px solid var(--line)}
+  .review li{padding:10px 0;border-bottom:1px solid var(--line);line-height:1.45;display:flex;gap:10px;align-items:center;justify-content:space-between}
+  .review .spk{width:30px;height:30px}
+  details.credits{margin-top:28px;font-size:.78rem;color:var(--muted)}
+  details.credits summary{cursor:pointer;text-transform:uppercase;letter-spacing:.1em}
+  details.credits a{color:var(--muted)}
+  .hidden{display:none}
+  @media (max-width:500px){body{padding:24px 14px}.q{font-size:1.08rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>The Circle of Life</h1>
+    <p>Lesson 4.5 · Vocabulary Revision Quiz</p>
+  </header>
+
+  <!-- START -->
+  <div class="card center" id="start">
+        <h2 style="margin:0">Hi My! Ready to revise?</h2>
+    <p class="lead">38 questions — pictures, meanings and fill-in-the-blanks.<br>Look at the photo, listen, choose the best answer, then press Next.</p>
+    <p class="label">Tap a word to hear it</p>
+    <div class="vocab" id="vocab"></div>
+    <div class="toggles">
+      <label><input type="checkbox" id="autoRead" checked> Read questions aloud</label>
+      <label><input type="checkbox" id="sfx" checked> Sound effects</label>
+    </div>
+    <button class="btn" onclick="startQuiz()">Start</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="card hidden" id="quiz">
+    <div class="top"><span class="badge" id="section"></span><span>Question <b id="num"></b> / <b id="total"></b> · Score <span class="score" id="sc">0</span></span></div>
+    <div class="bar"><div id="bar"></div></div>
+    <div id="media"></div>
+    <div class="qrow"><p class="q" id="qtext"></p><button class="spk" title="Listen" onclick="readQ()"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg></button></div>
+    <div class="opts" id="opts"></div>
+    <div class="fb" id="fb"></div>
+    <button class="next" id="next" onclick="nextQ()">Next</button>
+  </div>
+
+  <!-- END -->
+  <div class="card center hidden" id="end">
+        <h2 style="margin:0">Quiz finished!</h2>
+    <div class="stats">
+      <div><b id="finalScore"></b>correct</div>
+      <div><b id="finalPct"></b>score</div>
+    </div>
+    <p id="endMsg" class="lead"></p>
+    <div class="congrats">Congrats My for completing the task, take a screenshot and send to Giang! :D</div>
+    <div class="review" id="review"></div>
+    <button class="btn alt" onclick="startQuiz()">Try again</button>
+    <details class="credits"><summary>Photo credits</summary><ul id="creditList"></ul></details>
+  </div>
+</div>
+
+<script>
+const SPK=`<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>`;
+const W = ["extinct","habitat loss","herbivore","hunting","in captivity","interdependent","in the wild","poacher","pollinator","prey"];
+
+// photo: emoji scene; cap: small caption under the picture
+const QUESTIONS = [
+  // ---------- A. Picture questions ----------
+  {s:"Look at the picture", photo:"🦖 🦕 ❌", cap:"A dinosaur skeleton in a museum. There are no dinosaurs alive on Earth today.",
+   q:"Which word describes dinosaurs?", a:"extinct", o:["extinct","in captivity","prey","interdependent"],
+   e:"<b>Extinct</b> = no longer existing; all members of the species have died out. <i>Dinosaurs became extinct millions of years ago.</i>"},
+  {s:"Look at the picture", photo:"🌳 🪓 🚜 🐒 😢", cap:"This forest was burned and cleared for farming. The animals that lived here have lost their home.",
+   q:"What problem does this picture show?", a:"habitat loss", o:["habitat loss","hunting","in the wild","pollinator"],
+   e:"<b>Habitat loss</b> = the destruction of the natural home of animals or plants (e.g. by deforestation)."},
+  {s:"Look at the picture", photo:"🐄 🌿 🌾", cap:"This cow eats only grass and leaves.",
+   q:"A cow is a ___.", a:"herbivore", o:["herbivore","poacher","predator","pollinator"],
+   e:"A <b>herbivore</b> is an animal that eats only plants."},
+  {s:"Look at the picture", photo:"🏹 🦌 🌲", cap:"This man chases and kills wild animals for food.",
+   q:"What is this activity called?", a:"hunting", o:["hunting","habitat loss","pollinating","captivity"],
+   e:"<b>Hunting</b> = the activity of chasing and killing wild animals for food or sport."},
+  {s:"Look at the picture", photo:"🐼 🏢 🧑‍🔬", cap:"This panda lives in a zoo park in Hong Kong and is cared for by keepers.",
+   q:"The panda lives ___.", a:"in captivity", o:["in captivity","in the wild","extinct","as prey"],
+   e:"<b>In captivity</b> = kept in a controlled place like a zoo, not in the wild."},
+  {s:"Look at the picture", photo:"🐝 ⇄ 🌸", cap:"The bee gets food (nectar) from the flower; the flower gets help to reproduce.",
+   q:"Bees and flowers are ___.", a:"interdependent", o:["interdependent","extinct","herbivores","poachers"],
+   e:"<b>Interdependent</b> = depending on each other for support or survival."},
+  {s:"Look at the picture", photo:"🦁 🌾 ☀️ 🌳", cap:"A lion walks freely on the African savanna.",
+   q:"This lion lives ___.", a:"in the wild", o:["in the wild","in captivity","in danger of hunting","as a herbivore"],
+   e:"<b>In the wild</b> = living freely in nature, not controlled by humans."},
+  {s:"Look at the picture", photo:"🕵️ 🐘 🦷 💰", cap:"Elephant tusks taken from elephants that were killed illegally.",
+   q:"The person who illegally killed these elephants is a ___.", a:"poacher", o:["poacher","pollinator","herbivore","zookeeper"],
+   e:"A <b>poacher</b> is a person who <u>illegally</u> hunts or captures wild animals."},
+  {s:"Look at the picture", photo:"🦋 🌼 ✨ 🌻", cap:"The butterfly carries pollen from one flower to another.",
+   q:"The butterfly is a ___.", a:"pollinator", o:["pollinator","poacher","prey","habitat"],
+   e:"A <b>pollinator</b> helps plants reproduce by spreading pollen."},
+  {s:"Look at the picture", photo:"🦊 ➡️ 🐇 💨", cap:"A fox meets a rabbit in a garden. Foxes hunt and eat rabbits.",
+   q:"The rabbit is the fox's ___.", a:"prey", o:["prey","pollinator","poacher","habitat"],
+   e:"<b>Prey</b> = an animal that is hunted and eaten by another animal."},
+
+  // ---------- B. Meaning → word ----------
+  {s:"Meaning → Word", photo:"🔍 📖",
+   q:"“A person who illegally hunts or captures wild animals” is a…", a:"poacher", o:["poacher","hunter","pollinator","herbivore"],
+   e:"Careful: a <b>hunter</b> may hunt legally. A <b>poacher</b> does it <u>illegally</u>."},
+  {s:"Meaning → Word", photo:"🔍 📖",
+   q:"“No longer existing; all members of a species have died out” =", a:"extinct", o:["extinct","endangered","in captivity","interdependent"],
+   e:"<b>Extinct</b> means gone forever. <i>Endangered</i> means it might become extinct, but still exists."},
+  {s:"Meaning → Word", photo:"🔍 📖",
+   q:"“An animal that eats only plants” is a…", a:"herbivore", o:["herbivore","prey","pollinator","poacher"],
+   e:"<b>Herbivore</b> — herb (plant) + -vore (eat)."},
+  {s:"Meaning → Word", photo:"🔍 📖",
+   q:"“Depending on each other for support or survival” =", a:"interdependent", o:["interdependent","independent","in the wild","extinct"],
+   e:"<b>Inter</b>- (between/each other) + <b>dependent</b>. Don't mix it up with <i>independent</i> (not needing others)."},
+  {s:"Meaning → Word", photo:"🔍 📖",
+   q:"“Kept in a controlled environment such as a zoo” =", a:"in captivity", o:["in captivity","in the wild","habitat loss","hunting"],
+   e:"<b>In captivity</b> is the opposite of <b>in the wild</b>."},
+  {s:"Meaning → Word", photo:"🔍 📖",
+   q:"“The destruction or disappearance of the natural home of animals or plants” =", a:"habitat loss", o:["habitat loss","hunting","extinct","prey"],
+   e:"<b>Habitat</b> = natural home; <b>loss</b> = losing it."},
+  {s:"Meaning → Word", photo:"🔍 📖",
+   q:"“An animal or insect that helps plants reproduce by spreading pollen” is a…", a:"pollinator", o:["pollinator","herbivore","prey","poacher"],
+   e:"<b>Pollen</b> → <b>pollinate</b> → <b>pollinator</b> (the one who does it)."},
+  {s:"Meaning → Word", photo:"🔍 📖",
+   q:"“Living freely in nature, not controlled by humans” =", a:"in the wild", o:["in the wild","in captivity","interdependent","extinct"],
+   e:"<b>In the wild</b> — animals live freely in nature."},
+
+  // ---------- C. Word → meaning ----------
+  {s:"Word → Meaning", photo:"🐇",
+   q:"What does <b>prey</b> mean?", a:"An animal that is hunted and eaten by another animal",
+   o:["An animal that is hunted and eaten by another animal","An animal that hunts other animals","An animal that eats only plants","An insect that spreads pollen"],
+   e:"<b>Prey</b> is the one being eaten. The hunter animal is called a <i>predator</i>."},
+  {s:"Word → Meaning", photo:"🏹",
+   q:"What does <b>hunting</b> mean?", a:"The activity of chasing and killing wild animals for food or sport",
+   o:["The activity of chasing and killing wild animals for food or sport","Keeping animals in a zoo","Cutting down forests","Spreading pollen between flowers"],
+   e:"<b>Hunting</b> is a noun here: <i>Hunting has reduced the number of tigers.</i>"},
+  {s:"Word → Meaning", photo:"🐼",
+   q:"What does <b>in captivity</b> mean?", a:"Kept in a controlled environment such as a zoo",
+   o:["Kept in a controlled environment such as a zoo","Living freely in nature","No longer existing","Being chased by a predator"],
+   e:"Zoos, sanctuaries and breeding centres keep animals <b>in captivity</b>."},
+  {s:"Word → Meaning", photo:"🦕",
+   q:"If a species is <b>extinct</b>, it means…", a:"all members of the species have died out",
+   o:["all members of the species have died out","there are only a few left","it lives only in zoos","it eats only plants"],
+   e:"“Only a few left” = <i>endangered</i>. <b>Extinct</b> = none left at all."},
+  {s:"Word → Meaning", photo:"🐝",
+   q:"Why are bees called <b>pollinators</b>?", a:"Because they spread pollen and help plants reproduce",
+   o:["Because they spread pollen and help plants reproduce","Because they eat only plants","Because they are hunted by birds","Because they live in captivity"],
+   e:"<i>Bees are important pollinators for many crops.</i>"},
+  {s:"Word → Meaning", photo:"🌳🪓",
+   q:"Which is the best example of <b>habitat loss</b>?", a:"A forest is cut down to build a factory",
+   o:["A forest is cut down to build a factory","A tiger is born in a zoo","A cow eats grass","A bee visits a flower"],
+   e:"Destroying the place where animals live = <b>habitat loss</b>."},
+
+  // ---------- D. Part of speech ----------
+  {s:"Part of speech", photo:"🔤",
+   q:"What part of speech is <b>interdependent</b>?", a:"adjective", o:["adjective","noun","verb","prepositional phrase"],
+   e:"<b>Interdependent</b> describes things (<i>Bees and flowers are interdependent</i>) → adjective."},
+  {s:"Part of speech", photo:"🔤",
+   q:"What part of speech is <b>in the wild</b>?", a:"prepositional phrase", o:["prepositional phrase","noun phrase","adjective","noun"],
+   e:"It starts with the preposition <i>in</i> → <b>prepositional phrase</b> (same as <i>in captivity</i>)."},
+  {s:"Part of speech", photo:"🔤",
+   q:"What part of speech is <b>habitat loss</b>?", a:"noun phrase", o:["noun phrase","prepositional phrase","adjective","verb"],
+   e:"Two nouns together (<i>habitat</i> + <i>loss</i>) → <b>noun phrase</b>."},
+  {s:"Part of speech", photo:"🔤",
+   q:"Which word is an <b>adjective</b>?", a:"extinct", o:["extinct","poacher","prey","herbivore"],
+   e:"<b>Extinct</b> is an adjective (<i>become extinct</i>). The others are nouns."},
+
+  // ---------- E. Cloze test (from the worksheet) ----------
+  {s:"Fill in the blanks", photo:"🦏 ⚠️",
+   q:"Rhinos are in danger of becoming <span class='blank'></span> due to illegal <span class='blank'></span>.",
+   a:"extinct / hunting", o:["extinct / hunting","prey / habitat loss","in captivity / hunting","extinct / pollinator"],
+   e:"Rhinos are in danger of becoming <b>extinct</b> due to illegal <b>hunting</b>."},
+  {s:"Fill in the blanks", photo:"🌲🔥🐾",
+   q:"The destruction of forests has caused serious <span class='blank'></span> for many animals.",
+   a:"habitat loss", o:["habitat loss","hunting","prey","captivity"],
+   e:"Destroying forests = destroying animals' homes → <b>habitat loss</b>."},
+  {s:"Fill in the blanks", photo:"🦒 🌳",
+   q:"A giraffe is a <span class='blank'></span> that feeds on leaves from tall trees.",
+   a:"herbivore", o:["herbivore","poacher","pollinator","prey"],
+   e:"It eats leaves (plants) → <b>herbivore</b>."},
+  {s:"Fill in the blanks", photo:"🐅 🏢",
+   q:"Many tigers live <span class='blank'></span> in zoos to protect them from being hunted.",
+   a:"in captivity", o:["in captivity","in the wild","extinct","interdependent"],
+   e:"“in zoos” is the clue → <b>in captivity</b>."},
+  {s:"Fill in the blanks", photo:"🐝 🌸",
+   q:"Bees and flowers are <span class='blank'></span> because they need each other to survive.",
+   a:"interdependent", o:["interdependent","extinct","herbivores","prey"],
+   e:"“need each other” → <b>interdependent</b>."},
+  {s:"Fill in the blanks", photo:"🐾 🌍",
+   q:"Some species that were once common <span class='blank'></span> are now endangered.",
+   a:"in the wild", o:["in the wild","in captivity","habitat loss","poacher"],
+   e:"Species were once common <b>in the wild</b> (in nature), but now they are endangered."},
+  {s:"Think about it", photo:"🐄 🐑 🐇 🦁",
+   q:"Which animal is <b>NOT</b> a herbivore?", a:"lion", o:["lion","cow","sheep","rabbit"],
+   e:"Lions eat meat, so they are not herbivores."},
+  {s:"Think about it", photo:"🦁 ⇄ 🐼",
+   q:"Which word is the <b>opposite</b> of <i>in captivity</i>?", a:"in the wild", o:["in the wild","extinct","interdependent","habitat loss"],
+   e:"<b>In captivity</b> (zoo) ↔ <b>in the wild</b> (nature)."},
+  {s:"Think about it", photo:"🐘 🦷 🚫",
+   q:"Which sentence uses <b>poacher</b> correctly?", a:"The poacher was caught selling elephant tusks.",
+   o:["The poacher was caught selling elephant tusks.","The poacher eats only grass.","Bees are important poachers for crops.","The rabbit is the poacher of the fox."],
+   e:"A poacher is a <u>person</u> who illegally hunts animals."},
+  {s:"Think about it", photo:"🌍 ♻️",
+   q:"Which TWO things can make animals become extinct?", a:"hunting and habitat loss",
+   o:["hunting and habitat loss","pollinators and herbivores","living in the wild and eating plants","being interdependent and in captivity"],
+   e:"<b>Hunting</b> and <b>habitat loss</b> are the two big threats in this lesson."},
+];
+
+let order=[], idx=0, score=0, wrongs=[];
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+
+// ---------- Real photos (Wikimedia Commons, free licences) ----------
+const PHOTOS = {
+  trex:        {f:"AMNH 5027 mount.jpg", by:"InSapphoWeTrust"},
+  burn:        {f:"Lacanja burn.JPG", by:"Jami Dwyer"},
+  amazon:      {f:"Fires and Deforestation on the Amazon Frontier, Rondonia, Brazil - August 12, 2007.jpg", by:"NASA"},
+  cow:         {f:"Cow.jpg", by:"William Warby"},
+  hunter:      {f:"Dogon Hunter.JPG", by:"J. Drevet"},
+  panda:       {f:"Grosser Panda.JPG", by:"J. Patrick Fischer"},
+  rhinoZoo:    {f:"Diceros bicornis.jpg", by:"Jonathunder"},
+  beeAster:    {f:"European honey bee extracts nectar.jpg", by:"John Severns (Severnjc)"},
+  plumpollen:  {f:"Plumpollen0060.jpg", by:"Pollinator"},
+  lion:        {f:"Lion waiting in Namibia.jpg", by:"Kevin Pluck"},
+  maleCheetahs:{f:"Male Cheetahs, Maasai Mara (43941746162).jpg", by:"Flickr user via Wikimedia Commons"},
+  ivoryPallet: {f:"Pallet of seized raw ivory (USFWS).jpg", by:"U.S. Fish & Wildlife Service"},
+  ivoryCambodia:{f:"Ivory Seize Cambodia.jpg", by:"Wikimedia Commons"},
+  monarch:     {f:"Monarch In May.jpg", by:"Kenneth Dwain Harrelson"},
+  fox:         {f:"Urban fox 384.jpg", by:"Oosoom"},
+  cheetahChase:{f:"Cheetah chasing Thompsons gazelle crop.jpg", by:"Lee R. Berger"},
+  rhino:       {f:"South-western black rhinoceros (Diceros bicornis occidentalis) female.jpg", by:"Charles J. Sharp"},
+  giraffe:     {f:"Giraffe Mikumi National Park.jpg", by:"Muhammad Mahdi Karim"},
+  dodo:        {f:"Frohawk Dodo.png", by:"Frederick W. Frohawk (painting, 1905)"},
+};
+const imgURL = f => "https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(f.replace(/ /g,"_"))+"?width=800";
+const pageURL= f => "https://commons.wikimedia.org/wiki/File:"+encodeURIComponent(f.replace(/ /g,"_"));
+const IMG = ["trex", "burn", "cow", "hunter", "panda", "beeAster", "lion", "ivoryPallet", "monarch", "fox", "ivoryCambodia", "dodo", "giraffe", "plumpollen", "rhinoZoo", "amazon", "plumpollen", "maleCheetahs", "cheetahChase", "hunter", "panda", "trex", "beeAster", "burn", null, null, null, null, "rhino", "amazon", "giraffe", null, "plumpollen", "maleCheetahs", "giraffe", "panda", "ivoryPallet", "burn"];
+QUESTIONS.forEach((q,i)=>q.img=IMG[i]);
+
+// ---------- Audio ----------
+let voice=null;
+const FEMALE=/female|woman|samantha|karen|moira|tessa|serena|fiona|victoria|allison|ava|susan|zira|aria|jenny|sonia|libby|hazel|natasha|clara|emma|amy|joanna|salli|kimberly|kendra|ivy|olivia|catherine|sfg|tpf|gba|gbc/i;
+const MALE=/\bmale\b|daniel|alex|fred|arthur|oliver|george|ryan|guy|david|mark|james|thomas|rishi/i;
+function pickVoice(){
+  const vs=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));
+  const fem=vs.filter(v=>FEMALE.test(v.name)&&!/\bmale\b/i.test(v.name.replace(/female/i,"")));
+  voice = fem.find(v=>/Google UK English Female/i.test(v.name))
+       || fem.find(v=>/natural|online|neural|enhanced|premium/i.test(v.name))
+       || fem.find(v=>/en-GB/i.test(v.lang)) || fem.find(v=>/en-US/i.test(v.lang)) || fem[0]
+       || vs.find(v=>!MALE.test(v.name)) || vs[0] || null;
+  isFemale = !!voice && FEMALE.test(voice.name);
+}
+let isFemale=false;
+if("speechSynthesis" in window){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
+function speak(t){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t.replace(/<[^>]+>/g," ").replace(/___|_{2,}/g," ... ").replace(/\blives\b/gi,"livs").replace(/\blive\b/gi,"liv").replace(/\s+/g," "));
+  if(voice) u.voice=voice; u.lang=voice?voice.lang:"en-GB"; u.rate=0.9; u.pitch= isFemale?1.05:1.3;
+  speechSynthesis.speak(u);
+}
+let actx=null;
+function beep(ok){
+  if(!$("sfx").checked) return;
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    const notes= ok?[523,659,784]:[311,233];
+    notes.forEach((f,i)=>{
+      const o=actx.createOscillator(), g=actx.createGain(), t=actx.currentTime+i*0.12;
+      o.type= ok?"triangle":"sawtooth"; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(ok?0.25:0.12,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.22);
+      o.connect(g).connect(actx.destination); o.start(t); o.stop(t+0.25);
+    });
+  }catch(e){}
+}
+function qSpeech(q){ return q.q.replace(/<span class='blank'><\/span>/g," ... "); }
+function readQ(){ speak(qSpeech(QUESTIONS[order[idx]])); }
+
+// vocab list on start screen
+const DEFS={"extinct":"adjective","habitat loss":"noun phrase","herbivore":"noun","hunting":"noun","in captivity":"prepositional phrase",
+  "interdependent":"adjective","in the wild":"prepositional phrase","poacher":"noun","pollinator":"noun","prey":"noun"};
+$("vocab").innerHTML = W.map(w=>`<button onclick="speak('${w}')">${SPK}<span>${w}<small>${DEFS[w]}</small></span></button>`).join("");
+$("creditList").innerHTML = Object.values(PHOTOS).map(p=>`<li><a href="${pageURL(p.f)}" target="_blank" rel="noopener">${p.f}</a> — ${p.by} (Wikimedia Commons; licence on the linked page)</li>`).join("");
+
+function startQuiz(){
+  order=QUESTIONS.map((q,i)=>i);
+  idx=0; score=0; wrongs=[];
+  $("start").classList.add("hidden"); $("end").classList.add("hidden"); $("quiz").classList.remove("hidden");
+  $("total").textContent=QUESTIONS.length; show();
+}
+function show(){
+  const q=QUESTIONS[order[idx]];
+  $("section").textContent=q.s; $("num").textContent=idx+1; $("sc").textContent=score;
+  $("bar").style.width=(idx/QUESTIONS.length*100)+"%";
+  const cap = q.cap?`<div class="cap">${q.cap}</div>`:"";
+  if(q.img && PHOTOS[q.img]){
+    const p=PHOTOS[q.img];
+    $("media").innerHTML=`<div class="pic"><img alt="" src="${imgURL(p.f)}"><a class="credit" href="${pageURL(p.f)}" target="_blank" rel="noopener">${p.by}</a>${cap}</div>`;
+    $("media").querySelector("img").onerror=()=>{ $("media").innerHTML=`<div class="photo">${q.photo}${q.cap?`<small>${q.cap}</small>`:""}</div>`; };
+  } else {
+    $("media").innerHTML=`<div class="photo">${q.photo}${q.cap?`<small>${q.cap}</small>`:""}</div>`;
+  }
+  $("qtext").innerHTML=q.q;
+  const box=$("opts"); box.innerHTML="";
+  shuffle(q.o).forEach((t,i)=>{
+    const b=document.createElement("button"); b.className="opt";
+    b.innerHTML=`<span class="k">${"ABCD"[i]}</span><span>${t}</span><span class="say" title="Listen">${SPK}</span>`;
+    b.dataset.v=t;
+    b.onclick=(e)=>{ if(e.target.closest(".say")){ e.stopPropagation(); speak(t); return; } answer(b,t,q); };
+    box.appendChild(b);
+  });
+  $("fb").className="fb"; $("next").style.display="none";
+  if($("autoRead").checked) setTimeout(()=>speak(qSpeech(q)),250);
+}
+function answer(btn,val,q){
+  if(btn.classList.contains("locked")) return;
+  const ok=val===q.a;
+  [...$("opts").children].forEach(b=>{b.classList.add("locked"); b.style.cursor="default"; if(b.dataset.v===q.a) b.classList.add("right");});
+  if(ok){score++; $("fb").className="fb ok"; $("fb").innerHTML="<span class='tag'>Correct</span>"+q.e;}
+  else{btn.classList.add("wrong"); wrongs.push(q); $("fb").className="fb no"; $("fb").innerHTML="<span class='tag'>Not quite</span>The answer is <b>"+q.a+"</b>. "+q.e;}
+  beep(ok);
+  setTimeout(()=>speak((ok?"Correct! ":"The answer is: ")+q.a),350);
+  $("sc").textContent=score;
+  $("next").textContent= idx===QUESTIONS.length-1 ? "See my result" : "Next";
+  $("next").style.display="block";
+}
+function nextQ(){ idx++; if(idx<QUESTIONS.length) show(); else finish(); }
+function finish(){
+  $("quiz").classList.add("hidden"); $("end").classList.remove("hidden");
+  const n=QUESTIONS.length, pct=Math.round(score/n*100);
+  $("finalScore").textContent=score+"/"+n; $("finalPct").textContent=pct+"%";
+  $("endMsg").textContent= pct>=90?"Excellent! You really know these words.":pct>=70?"Great job! Just a few words to review.":pct>=50?"Good effort! Review the words below and try again.":"Keep practising — look at the words below and try again!";
+  $("review").innerHTML = wrongs.length
+    ? "<h3>Words to review</h3><ul>"+wrongs.map(q=>`<li><span>${q.q.replace(/<span class='blank'><\/span>/g,"___")} → <b>${q.a}</b></span><button class="spk" onclick="speak('${q.a.replace(/'/g,"")}')">${SPK}</button></li>`).join("")+"</ul>"
+    : "<h3>Perfect score — no mistakes</h3>";
+  if($("sfx").checked){ [0,150,300,450].forEach((d,i)=>setTimeout(()=>beep(true),d)); }
+  setTimeout(()=>speak("Congrats My for completing the task! Take a screenshot and send it to Giang!"),900);
+}
+</script>
+</body>
+</html>
